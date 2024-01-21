@@ -1,11 +1,27 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Spring Security Example</title>
+<meta charset="UTF-8">
+<title>User page</title>
 </head>
 <body>
-<h1>User, welcome spring boot security page!</h1>
+	<a href= "/logout">Logout</a>
+	<p>Input new value</p>
+	<p th:text="${user.id}">ID</p>
+	<form th:action ="@{/admin/update}" th:method = "patch" th:object = "${user}">
+		<input type="hidden" th:field="${user.id}"/>
+		
+		<label>Input new login</label>
+		<input type="text" th:field= "${user.login}" th:value = "${user.login}"/>
+		<div style="color:red"th:if="${#fields.hasErrors('login')}" th:errors="*{login}">Invalid login</div>
 
-
+		<br/>
+		
+		<label>Input new password</label>
+		<input type="text" th:field= "${user.password}" th:value = "${user.password}"/>
+		<div style="color:red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Invalid password</div>
+		
+		<button type="submit">Update user</button>
+	</form>
 </body>
 </html>
