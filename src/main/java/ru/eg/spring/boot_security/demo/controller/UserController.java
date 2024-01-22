@@ -1,6 +1,5 @@
 package ru.eg.spring.boot_security.demo.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -16,12 +15,9 @@ public class UserController {
 
 	private final UserRepository userRepository;
 	
-	@Autowired
 	public UserController(UserRepository userRepository) {
 		this.userRepository = userRepository;
 	}
-
-
 
 	@GetMapping
 	public String getUser(ModelMap model) {

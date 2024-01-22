@@ -3,13 +3,12 @@ package ru.eg.spring.boot_security.demo.service;
 import java.util.List;
 import java.util.Set;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import ru.eg.spring.boot_security.demo.dao.RoleRepository;
 import ru.eg.spring.boot_security.demo.dao.UserRepository;
-import ru.eg.spring.boot_security.demo.model.Role;
 import ru.eg.spring.boot_security.demo.model.User;
 
 @Transactional
@@ -20,10 +19,12 @@ public class UserServiceImpl implements UserService{
 	
 	private final RoleRepository roleRepository;
 	
-	@Autowired
-	public UserServiceImpl(UserRepository repository, RoleRepository roleRepository) {
+	private final PasswordEncoder passwordEncoder;
+	
+	public UserServiceImpl(UserRepository repository, RoleRepository roleRepository, PasswordEncoder encoder) {
 		this.repository = repository;
 		this.roleRepository = roleRepository;
+		this.passwordEncoder = encoder;
 	}
 
 	@Transactional(readOnly = true)
@@ -35,8 +36,7 @@ public class UserServiceImpl implements UserService{
 	@Transactional(readOnly = true)
 	@Override
 	public User findByLogin(String login) {
-		// TODO Auto-generated method stub
-		return null;
+		return repository.findByLogin(login).orElse(null);
 	}
 
 	@Transactional(readOnly = true)
@@ -48,6 +48,7 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public void create(User user) {
 		user.setRoles(Set.of(roleRepository.findRoleByName("ROLE_USER").get()));
+		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		repository.save(user);
 		
 	}
@@ -57,7 +58,7 @@ public class UserServiceImpl implements UserService{
 		repository.findById(user.getId())
 					.ifPresent(oldUser -> {
 						oldUser.setLogin(user.getUsername());
-						oldUser.setPassword(user.getPassword());
+						oldUser.setPassword(passwordEncoder.encode(user.getPassword()));
 						oldUser.setRoles(user.getRoles());
 						repository.save(oldUser);
 					});

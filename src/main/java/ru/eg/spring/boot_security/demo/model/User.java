@@ -1,10 +1,8 @@
 package ru.eg.spring.boot_security.demo.model;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -14,7 +12,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -42,6 +39,15 @@ public class User implements UserDetails{
 	joinColumns = @JoinColumn(name="user_id"),
 	inverseJoinColumns = @JoinColumn(name="role_id"))
 	private Set<Role> roles;
+
+	
+	public User() {}
+
+	public User(String login, String password, Set<Role> roles) {
+		this.login = login;
+		this.password = password;
+		this.roles = roles;
+	}
 
 	public Integer getId() {
 		return id;

@@ -4,7 +4,18 @@
     <title>Spring Security Example</title>
 </head>
 <body>
-<h1>Welcome to Index PAGE!</h1>
+	<div th:if = "${name != null}">
+			<a href= "/logout" style = "display : block">Logout</a>
+	</div>
+	<div th:unless = "${name != null}">
+		<table>
+			<tr>
+			<td><a href= "/registration">Registration</a></td>
+			<td><a href= "/login">Login</a></td>
+			</tr>
+		</table>
+	</div>
+	<h1>Welcome to Index PAGE!</h1>
 
 
 </body>

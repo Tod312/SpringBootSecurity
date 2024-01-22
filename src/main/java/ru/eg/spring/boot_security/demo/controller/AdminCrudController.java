@@ -2,7 +2,6 @@ package ru.eg.spring.boot_security.demo.controller;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import ru.eg.spring.boot_security.demo.model.User;
 import ru.eg.spring.boot_security.demo.service.UserService;
-import ru.eg.spring.boot_security.demo.util.UserValidator;
 
 @Controller
 @RequestMapping("/admin")
@@ -34,7 +32,6 @@ public class AdminCrudController {
 		binder.addValidators(userValidator);
 	}
 	
-	@Autowired
 	public AdminCrudController(UserService service, Validator userValidator) {
 		this.userValidator = userValidator;
 		this.service = service;
@@ -76,12 +73,8 @@ public class AdminCrudController {
 	
 	@PatchMapping("/update")
 	public String update(@ModelAttribute("user") User user, BindingResult bindingResult) {
-		System.out.println("User from update");
-		System.out.println(user);
 		userValidator.validate(user, bindingResult);
 		if(bindingResult.hasErrors()) {
-			System.out.println("User has errors in update method");
-			//User oldUser = service.findById(user.getId());
 			return "user";
 		}
 		user.setRoles(service.findById(user.getId()).getRoles());

@@ -14,7 +14,7 @@
 		<br/>
 		
 		<label>Input your password</label>
-		<input type="text" th:field= "${user.password}"/>
+		<input type="password" th:field= "${user.password}"/>
 		<div style="color:red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Invalid password</div>
 		
 		<button type="submit">Registration</button>
